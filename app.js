@@ -4,10 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cons = require('consolidate');
-
 var routes = require('./routes/index');
-
 var app = express();
+
+require('underscore-express')(app);
 
 // view engine setup
 app.engine('html',cons.underscore);
