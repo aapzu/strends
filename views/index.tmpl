@@ -1,31 +1,36 @@
 <html>
     <head>
         <title><%=title%></title>
+
+        <!-- Own stylesheet -->
         <link href="css/style.css" rel="stylesheet"/>
         
-        <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-        <link href="plugins/startbootstrap-freelancer-1.0.3/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap 3.0.2 -->
+        <link href="plugins/AdminLTE/css/bootstrap.min.css" rel="stylesheet"/>
 
-        <!-- Custom CSS -->
-        <link href="plugins/startbootstrap-freelancer-1.0.3/css/freelancer.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="plugins/AdminLTE/css/font-awesome.min.css" rel="stylesheet"/>
+
+        <!-- Theme CSS -->
+        <link id="base-style" href="plugins/AdminLTE/css/AdminLTE.css" rel="stylesheet"/>
 
         <!-- Custom Fonts -->
-        <link href="plugins/startbootstrap-freelancer-1.0.3/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
         <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     </head>
-    <body >
+    <body class="skin-black">
     <%= include('navbar') %>
     <%= include('content') %>
 
+        <!-- Jquery 2.1.4 -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <!-- Underscore -->
         <script src="plugins/underscore/underscore-min.js"></script>
+        <!-- Backbone -->
         <script src="plugins/backbone/backbone-min.js"></script>
 
         <!-- Bootstrap Core JavaScript -->
-        <script src="plugins/startbootstrap-freelancer-1.0.3/js/bootstrap.min.js"></script>
+        <script src="plugins/AdminLTE/js/bootstrap.min.js"></script>
 
-        <!-- Custom Theme JavaScript -->
-        <script src="plugins/startbootstrap-freelancer-1.0.3/js/freelancer.js"></script>
     </body >
 </html>
