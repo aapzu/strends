@@ -3,3 +3,10 @@ body {
     height: 100%;
     position: fixed;
 }
+#content-wrapper.right-side.content-centered {
+    margin-left: 110px;
+    margin-right: 110px;
+}
+#content-wrapper .small-box .inner {
+    height: 150px;
+}

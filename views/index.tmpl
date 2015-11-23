@@ -19,8 +19,10 @@
         <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     </head>
     <body class="skin-black">
-    <%= include('navbar') %>
-    <%= include('content') %>
+        <%= include('navbar') %>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <%= include('content') %>
+        </div>
 
         <!-- Jquery 2.1.4 -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -31,6 +33,9 @@
 
         <!-- Bootstrap Core JavaScript -->
         <script src="plugins/AdminLTE/js/bootstrap.min.js"></script>
+
+        <!-- Own JS -->
+        <script src="js/global.js"></script>
 
     </body >
 </html>
