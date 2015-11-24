@@ -30,12 +30,40 @@
         <script src="plugins/underscore/underscore-min.js"></script>
         <!-- Backbone -->
         <script src="plugins/backbone/backbone-min.js"></script>
+        <!-- Backbone LocalStorage -->
+        <script src="plugins/backbone.localStorage/backbone.localStorage.js"></script>
 
         <!-- Bootstrap Core JavaScript -->
         <script src="plugins/AdminLTE/js/bootstrap.min.js"></script>
 
         <!-- Own JS -->
         <script src="js/global.js"></script>
+
+        <!-- App -->
+
+        <!-- Namespace -->
+        <script src="js/app/namespace.js"></script>
+
+        <!-- Models -->
+        <script src="js/app/models/dashboard-item.js"></script>
+
+        <!-- Collections -->
+        <script src="js/app/collections/dashboard-item-collection.js"></script>
+
+        <!-- Templates -->
+        <script src="js/app/templates/templates.js"></script>
+
+        <!-- Views -->
+        <script src="js/app/views/search-bar-view.js"></script>
+        <script src="js/app/views/dashboard-item-view.js"></script>
+        <script src="js/app/views/dashboard-view.js"></script>
+
+        <script>
+            var dashboard = new Strends.Views.DashboardView({
+                el: "#content-wrapper .content",
+                searchBarEl: ".sidebar .sidebar-form"
+            })
+        </script>
 
     </body >
 </html>
