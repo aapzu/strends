@@ -60,5 +60,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
+var dataHand = require("./src/data-hand.js").dataHand
+
 
 module.exports = app;

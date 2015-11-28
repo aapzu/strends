@@ -3,9 +3,9 @@ Strends.Templates.DashboardTemplate = '<div class="row"></div>';
 
 Strends.Templates.DashboardItemTemplate = ''+
     '<div class="col-lg-4 col-xs-6">'+
-        '<div class="small-box bg-aqua">'+
+        '<div class="small-box bg-<%= color %>">'+
             '<div class="inner">'+
-                '<h2>#<%= rank %></h2><h3><%= word %></h3>'+
+                '<h2 class="rank">#<%= rank %></h2><h3 class="word"><%= word %></h3>'+
             '</div>'+
             '<div class="icon">'+
                 '<i class="ion ion-bag"></i>'+

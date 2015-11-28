@@ -4,9 +4,9 @@ Strends.Collections.DashboardItemCollection = Backbone.Collection.extend({
     comparator: "rank",
     localStorage: new Backbone.LocalStorage("strends"),
 
-    initialize: function(){
+    initialize: function() {
         var _this = this
-        this.listenTo(this, "add", function(model){
+        this.listenTo(this, "update", function(model){
             if(_this.size() > 9){
                 this.at(0).destroy()
             }
