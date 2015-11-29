@@ -24,7 +24,7 @@ Strends.Views.SearchBarView = Backbone.View.extend({
         if(query == "EMPTYALL")
             this.trigger("empty")
         else
-            this.trigger("search", query)
+            this.trigger("search", query.toLowerCase())
         this.input.val("")
     }
 })

@@ -11,5 +11,15 @@ Strends.Collections.DashboardItemCollection = Backbone.Collection.extend({
                 this.at(0).destroy()
             }
         })
+    },
+
+    add: function(model){
+        if(this.find(function(m){
+                return m.get("word") == model.get("word")
+            }))
+            throw "Already in the collection!"
+        Backbone.Collection.prototype.add.apply(this, [model])
     }
+
+
 })

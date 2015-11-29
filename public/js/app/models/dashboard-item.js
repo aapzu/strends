@@ -2,7 +2,6 @@
 Strends.Models.DashboardItem = Backbone.Model.extend({
     defaults: {
         rank: undefined,
-        word: "",
         color: "aqua"
     },
 
@@ -10,6 +9,9 @@ Strends.Models.DashboardItem = Backbone.Model.extend({
         var _this = this
         this.listenTo(this.collection, "update", function(){
             _this.set("rank", this.collection.indexOf(_this)+1)
+        })
+        this.listenTo(this, "message", function(msg){
+            console.log(msg)
         })
     },
 

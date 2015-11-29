@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cons = require('consolidate');
+var _ = require('underscore');
 
 // The route files must me required here
 var index = require('./routes/index');
@@ -60,7 +61,21 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var dataHand = require("./src/data-hand.js").dataHand
+// The hand which pushes data from Twitter's api to Streamr's api
+var dataHand = require("./src/data-hand.js")({
+  twitter: {
+    consumer_key: "HI0mcdH2xj5PyxynulBcTaQHM",
+    consumer_secret: "xYl25RvpsMWcJzrv6sGz7H5348QPB0IQO9ovw6kDGzaHCPgaPL",
+    access_token_key: "118690370-CywZu2RJ5zupfs4PUDiCqzxJjkXIrWoP8JuPVBQx",
+    access_token_secret: "jNWu4iTjVEW3BsDXcobKD7HKMyGjGPdm2Sw8c38VRdPyS"
+  },
+  streamr: {
+    stream_id: "7v6Wyy8wTmiZ7nKNjDMSyA",
+    stream_auth: "OpZb2n9bRHyQNluvT3Afxw"
+  }
+})
+
+dataHand.stream(["happy", "isis"])
 
 
 module.exports = app;

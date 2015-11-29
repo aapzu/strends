@@ -10,3 +10,31 @@ body {
 #content-wrapper .small-box .inner {
     height: 150px;
 }
+
+.remove-di-button {
+    margin: 3px;
+    font-size: 20px;
+    color: rgba(245,245,245,0.5);
+    cursor: pointer;
+}
+
+.remove-di-button:active,
+.remove-di-button:hover,
+.remove-di-button:focus {
+    color: rgba(245,245,245,1);
+}
+
+.dashboard-item.edit span.word {
+    display: none;
+}
+
+.dashboard-item:not(.edit) span.word-input {
+    display:none;
+}
+
+.dashboard-item span.word-input input {
+    height: 30%;
+    font-size: 65%;
+    margin-top: -5px;
+    width: 70%;
+}
