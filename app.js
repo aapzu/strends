@@ -75,7 +75,7 @@ var dataHand = require("./src/data-hand.js")({
   }
 })
 
-dataHand.stream(["happy", "isis"])
+dataHand.stream(["finland", "sweden"])
 
 
 module.exports = app;

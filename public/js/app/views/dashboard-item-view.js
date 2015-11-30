@@ -2,12 +2,13 @@
 Strends.Views.DashboardItemView = Backbone.View.extend({
     events: {
         "click .remove-di-button":"delete",
-        "click .word": "edit",
+        "click .edit-button": "edit",
         "keydown .word-input input": "changeWord",
         "blur .word-input input": "changeWord"
     },
 
     template: _.template(Strends.Templates.DashboardItemTemplate),
+    tweetTemplate: _.template(Strends.Templates.TweetTemplate),
 
     initialize: function(){
 
@@ -21,6 +22,7 @@ Strends.Views.DashboardItemView = Backbone.View.extend({
         this.rankEl = this.$el.find(".rank")
         this.wordEl = this.$el.find(".word")
         this.wordInput = this.$el.find(".word-input input")
+        this.tweetEl = this.$el.find(".tweet-container")
 
         this.bindEvents()
 
@@ -28,8 +30,12 @@ Strends.Views.DashboardItemView = Backbone.View.extend({
     },
 
     bindEvents: function(){
+        var _this = this
         this.listenTo(this.model, "remove", this.remove)
         this.listenTo(this.model, "change", this.update)
+        this.listenTo(this.model, "message", function(msg){
+            _this.tweetEl.html(_this.tweetTemplate(msg))
+        })
     },
 
     delete: function(){

@@ -7,34 +7,61 @@ body {
     margin-left: 110px;
     margin-right: 110px;
 }
-#content-wrapper .small-box .inner {
-    height: 150px;
+
+#content-wrapper .dashboard-item {
+    height: 170px;
+    max-height: 170px;
 }
 
-.remove-di-button {
-    margin: 3px;
+#content-wrapper .dashboard-item .inner {
+    height: 100px;
+}
+
+#content-wrapper .dashboard-item .tweet-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+#content-wrapper .dashboard-item .tweet-container a {
+    color: #FFF;
+}
+
+#content-wrapper .dashboard-item .remove-di-button {
     font-size: 20px;
+}
+
+#content-wrapper .dashboard-item .edit-button {
+    font-size: 17px;
+}
+
+#content-wrapper .dashboard-item .edit-button,
+#content-wrapper .dashboard-item .remove-di-button {
+    margin-right: 4px;
+    margin-top: 3px;
     color: rgba(245,245,245,0.5);
     cursor: pointer;
 }
 
-.remove-di-button:active,
-.remove-di-button:hover,
-.remove-di-button:focus {
+#content-wrapper .dashboard-item .remove-di-button:active,
+#content-wrapper .dashboard-item .remove-di-button:hover,
+#content-wrapper .dashboard-item .remove-di-button:focus,
+#content-wrapper .dashboard-item .edit-button:active,
+#content-wrapper .dashboard-item .edit-button:hover,
+#content-wrapper .dashboard-item .edit-button:focus{
     color: rgba(245,245,245,1);
 }
 
-.dashboard-item.edit span.word {
+#content-wrapper .dashboard-item.edit span.word {
     display: none;
 }
 
-.dashboard-item:not(.edit) span.word-input {
+#content-wrapper .dashboard-item:not(.edit) span.word-input {
     display:none;
 }
 
-.dashboard-item span.word-input input {
-    height: 30%;
-    font-size: 65%;
+#content-wrapper .dashboard-item span.word-input input {
+    font-size: 60%;
     margin-top: -5px;
-    width: 70%;
+    width: 65%;
 }

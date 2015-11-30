@@ -5,6 +5,7 @@ Strends.Templates.DashboardItemTemplate = '' +
     '<div class="col-lg-4 col-xs-6">' +
         '<div class="dashboard-item small-box bg-<%= color %>">' +
             '<div class="pull-right box-tools">' +
+                '<i class="edit-button fa fa-pencil"></i>' +
                 '<i class="remove-di-button fa fa-times"></i>' +
             '</div>'+
             '<div class="inner">'+
@@ -20,11 +21,18 @@ Strends.Templates.DashboardItemTemplate = '' +
             '<div class="icon">' +
                 '<i class="ion ion-bag"></i>' +
             '</div>' +
-            '<a href="#" class="small-box-footer">' +
-                'More info <i class="fa fa-arrow-circle-right"></i>' +
-            '</a>' +
+            '<div class="tweet-container small-box-footer"></div>'
         '</div>' +
     '</div>' ;
+
+Strends.Templates.TweetTemplate = '' +
+    '<a href="http://www.twitter.com/<%= user.screen_name %>/status/<%= id_str %>" target="_blank">' +
+        '<span class="tweet" title="<%= user.name %>&nbsp;@<%= user.screen_name %>">' +
+            '<%= text %>' +
+        '</span>' +
+    '</a>' ;
+
+
 
 Strends.Templates.SearchBarTemplate = '' +
     '<div class="input-group">' +
