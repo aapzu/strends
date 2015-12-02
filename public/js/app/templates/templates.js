@@ -2,7 +2,7 @@
 Strends.Templates.DashboardTemplate = '<div class="row"></div>';
 
 Strends.Templates.DashboardItemTemplate = '' +
-    '<div class="col-lg-4 col-xs-6">' +
+    '<div class="col-lg-4 col-md-6 col-sm-12">' +
         '<div class="dashboard-item small-box bg-<%= color %>">' +
             '<div class="pull-right box-tools">' +
                 '<i class="edit-button fa fa-pencil"></i>' +
