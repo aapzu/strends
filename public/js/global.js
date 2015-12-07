@@ -1,5 +1,3 @@
-//  Set up the main JS object
-var Strends = {}
 //  Set up the button to toggle the sidebar
 $("#sidebar-toggle").click(function(e) {
 

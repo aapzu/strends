@@ -23,9 +23,20 @@ Strends.Models.Dashboard = Backbone.Model.extend({
                 })
             },
             {
-                resend_last: 1
+                resend_last: 0
             }
         )
+        this.bindEvents()
+    },
+
+    bindEvents: function(){
+        var _this = this
+        this.listenTo(this.collection, "add", function(model){
+            _this.addWord(model.get("word"))
+        })
+        this.listenTo(this.collection, "remove", function(model){
+            _this.removeWord(model.get("word"))
+        })
     },
 
     sendMessage: function(word, message){
@@ -34,5 +45,17 @@ Strends.Models.Dashboard = Backbone.Model.extend({
         })
         if(model)
             model.trigger("message", message)
+    },
+
+    stream: function(query){
+        $.get(baseUrl+'/data/stream/'+query)
+    },
+
+    addWord: function(word){
+        $.get(baseUrl+'/data/addWord/'+word)
+    },
+
+    removeWord: function(word){
+        $.get(baseUrl+'/data/removeWord/'+word)
     }
 })

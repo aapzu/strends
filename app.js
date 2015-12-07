@@ -7,12 +7,20 @@ var cons = require('consolidate');
 var _ = require('underscore');
 
 // The route files must me required here
-var index = require('./routes/index');
+var indexRoute = require('./routes/index-route');
+var dataRoute = require('./routes/data-route');
 
 var app = express();
 var base = express.Router();
 
 require('underscore-express')(app);
+
+// Set the base url /strends
+app.use('/strends', base);
+
+// All the urls now used by base are in the form /strends/<url>
+base.use('/', indexRoute);
+base.use('/data', dataRoute)
 
 // view engine setup
 app.engine('html',cons.underscore);
@@ -27,8 +35,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/strends', base);
-app.use('/strends', index);
+app.locals.baseUrl = "/strends"
+app.locals.title = "Strends"
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -62,7 +70,7 @@ app.use(function(err, req, res, next) {
 });
 
 // The hand which pushes data from Twitter's api to Streamr's api
-var dataHand = require("./src/data-hand.js")({
+dataHand = require("./src/data-hand.js")({
   twitter: {
     consumer_key: "HI0mcdH2xj5PyxynulBcTaQHM",
     consumer_secret: "xYl25RvpsMWcJzrv6sGz7H5348QPB0IQO9ovw6kDGzaHCPgaPL",
@@ -74,8 +82,5 @@ var dataHand = require("./src/data-hand.js")({
     stream_auth: "OpZb2n9bRHyQNluvT3Afxw"
   }
 })
-
-dataHand.stream(["finland", "sweden"])
-
 
 module.exports = app;

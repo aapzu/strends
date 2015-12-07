@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.render('index.tmpl', { title: 'Strends'});
+	res.render('index.tmpl');
 });
 
 module.exports = router;
