@@ -15,7 +15,8 @@ Strends.Views.SearchBarView = Backbone.View.extend({
         var _this = this
         this.searchButton.click(function(e){
             e.preventDefault()
-            _this.search(_this.input.val())
+            if(_this.input.val())
+                _this.search(_this.input.val())
         })
     },
 

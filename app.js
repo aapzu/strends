@@ -35,8 +35,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.locals.baseUrl = "/strends"
-app.locals.title = "Strends"
+app.locals.title = "strends"
+app.locals.baseUrl = "/"+app.locals.title
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -51,23 +51,31 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    var tmplName
     res.status(err.status || 500);
-    res.render('error', {
+    if(res.statusCode == 500 || res.statusCode == 404)
+      tmplName = ""+res.statusCode
+    else
+      tmplName == "error"
+    tmplName = "error/"+tmplName+".tmpl"
+    res.render(tmplName, {
       message: err.message,
       error: err
     });
   });
 }
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
+else {
+  // production error handler
+  // no stacktraces leaked to user
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: {}
+    });
   });
-});
+}
 
 // The hand which pushes data from Twitter's api to Streamr's api
 dataHand = require("./src/data-hand.js")({

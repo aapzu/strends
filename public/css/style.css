@@ -1,8 +1,32 @@
 body {
     width: 100%;
     height: 100%;
-    /*position: fixed;*/
 }
+
+#strends-navbar .logo:first-letter {
+    text-transform:capitalize;
+}
+
+#strends-sidebar {
+    height: 100%;
+}
+
+#strends-sidebar .sidebar-form.search-form {
+    margin: 0;
+    padding: 10px;
+}
+
+#strends-sidebar .sidebar-menu ul li .start-streaming-btn {
+    margin: 10px;
+}
+
+#search-input {
+    color: #F4F4F4;
+}
+
+#content-wrapper section.content {
+}
+
 #content-wrapper.right-side.content-centered {
     margin-left: 110px;
     margin-right: 110px;

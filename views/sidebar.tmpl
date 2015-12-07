@@ -1,15 +1,27 @@
-<aside id="strends-sidebar" class="left-side sidebar-offcanvas" style="min-height: 2023px;">
-    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 220px;"><section class="sidebar" style="overflow: hidden; width: auto; height: 220px;">
-        <form class="sidebar-form">
+<aside id="strends-sidebar" class="left-side sidebar-offcanvas">
+    <section class="sidebar" style="overflow: hidden; width: auto; height: 220px;">
 
-        </form>
         <ul class="sidebar-menu">
-            <li class="active">
-                <!-- TODO: Change to dynamic URL -->
-                <a href="strends">
-                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-pencil"></i><span>Edit</span><i class="fa pull-right fa-angle-left"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li>
+                        <form class="sidebar-form search-form">
+
+                        </form>
+                    </li>
+                    <li class="text-center">
+                        <span class="start-streaming-btn btn btn-sm btn-primary">Start Streaming!</span>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="<%= baseUrl %>">
+                    <i class="fa fa-dashboard"></i><span>Dashboard</span>
                 </a>
             </li>
         </ul>
-    </section><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 91.8406px; background: rgba(0, 0, 0, 0.2);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div></div>
+    </section>
 </aside>

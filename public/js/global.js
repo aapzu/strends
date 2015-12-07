@@ -5,7 +5,6 @@ $("#sidebar-toggle").click(function(e) {
 
     //If window is small enough, enable sidebar push menu
     if ($(window).width() <= 992) {
-        var a = $('.row-offcanvas')
         $('.row-offcanvas').toggleClass('active');
         $('.left-side').removeClass("collapse-left");
         $(".right-side").removeClass("strech");
@@ -18,5 +17,16 @@ $("#sidebar-toggle").click(function(e) {
             $("#strends-sidebar").addClass("collapse-left")
             $("#content-wrapper").addClass("content-centered")
         }
+    }
+})
+
+$(window).resize(function(){
+    if($(this).width() < 600) {
+        /* the view port is at less than 600 pixels wide */
+        $("body").addClass("small")
+    }
+    else {
+        /* the view port is more than 600 pixels wide */
+        $("body").removeClass("small")
     }
 })
