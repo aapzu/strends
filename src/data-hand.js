@@ -5,6 +5,8 @@ var rest = require('restler');
 function DataHand(options) {
     var _this = this;
 
+    this.list = []
+
     this.client = new Twitter({
         consumer_key: options.twitter.consumer_key,
         consumer_secret: options.twitter.consumer_secret,
@@ -12,7 +14,7 @@ function DataHand(options) {
         access_token_secret: options.twitter.access_token_secret
     });
 
-    this.stream = function(words){
+    this.buildRequest = function(words){
         var request
         if (words instanceof Array || words === undefined || words == '') {
             if(words !== undefined && words != '')
@@ -31,32 +33,17 @@ function DataHand(options) {
         }
         // We must URL encode the request first
         request = encodeURI(request)
+        return request
+    }
 
-        var limit = true
+    this.stream = function(words){
+        var request = this.buildRequest(words)
 
         console.log("Streaming started! Request: '"+request+"'")
         this.client.stream('statuses/filter', {track: request}, function(stream) {
             _this.twitterStream = stream
             stream.on('data', function(tweet) {
-                if (tweet.limit) {
-                    limit = true
-                    console.log("Rate limited: " + tweet.limit.track);
-                } else {
-                    var message = JSON.stringify(_this.parse(tweet))
-                    if(limit){
-                        console.log("Tweet received!")
-                        limit = false
-                    }
-                    rest.post('http://data.streamr.com/json', {
-                        headers: {
-                            Stream: options.streamr.stream_id,
-                            Auth: options.streamr.stream_auth
-                        },
-                        data: message
-                    }).on('complete', function(data, response) {
-                        if (!response) console.log("Warn: response was null")
-                    });
-                }
+                _this.processTweet(tweet)
             });
 
             stream.on('error', function(error) {
@@ -64,6 +51,29 @@ function DataHand(options) {
             });
         });
     };
+
+    this.processTweet = function(tweet){
+        this.limit = true
+        if (tweet.limit) {
+            limit = true
+            console.log("Rate limited: " + tweet.limit.track);
+        } else {
+            var message = JSON.stringify(_this.parse(tweet))
+            if(limit){
+                console.log("Tweet received!")
+                this.limit = false
+            }
+            rest.post('http://data.streamr.com/json', {
+                headers: {
+                    Stream: options.streamr.stream_id,
+                    Auth: options.streamr.stream_auth
+                },
+                data: message
+            }).on('complete', function(data, response) {
+                if (!response) console.log("Warn: response was null")
+            });
+        }
+    }
 
     this.addWord = function(word){
         if(!_.contains(this.list, word)){
@@ -81,9 +91,12 @@ function DataHand(options) {
         }
     }
 
-/*
-    this.
-*/
+    this.changeWord = function(word, newWord){
+        var index = this.list.indexOf(word)
+        if(index !== -1)
+            this.list[index] = newWord
+        this.stream()
+    }
 
     this.destroy = function(){
         if(this.twitterStream){

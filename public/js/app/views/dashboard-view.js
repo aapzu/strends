@@ -41,11 +41,8 @@ Strends.Views.DashboardView = Backbone.View.extend({
             })
         })
 
-        // To be removed
-        this.listenTo(this.searchBar, "empty", function(){
-            while(_this.model.collection.size() > 0) {
-                _this.model.collection.at(0).destroy()
-            }
+        this.listenTo(this.searchBar, "stream", function(){
+            _this.model.streamAll()
         })
 
         this.listenTo(this.model.collection, "add", function(model){

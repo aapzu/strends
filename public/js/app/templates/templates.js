@@ -35,10 +35,25 @@ Strends.Templates.TweetTemplate = '' +
 
 
 Strends.Templates.SearchBarTemplate = '' +
-    '<div class="input-group">' +
-        '<input type="text" id="search-input" class="form-control" placeholder="Search...">' +
-        '<span class="input-group-btn">' +
-            '<button type="submit" id="search-btn" class="btn btn-flat">' +
-            '<i class="fa fa-search"></i></button>' +
-        '</span>' +
-    '</div>' ;
+    '<a>' +
+        '<i class="fa fa-pencil"></i>' +
+        '<span>Add words</span>' +
+        '<i class="fa pull-right fa-angle-down"></i>' +
+    '</a>' +
+    '<ul class="treeview-menu">' +
+        '<li>' +
+            '<form class="sidebar-form search-form">' +
+                '<div class="input-group">' +
+                    '<input type="text" id="search-input" class="form-control" placeholder="Search...">' +
+                    '<span class="input-group-btn">' +
+                        '<button type="submit" id="search-btn" class="btn btn-flat">' +
+                            '<i class="fa fa-search"></i>' +
+                        '</button>' +
+                    '</span>' +
+                '</div>' +
+            '</form>' +
+        '</li>' +
+        '<li class="text-center">' +
+            '<span class="start-streaming-btn btn btn-sm btn-primary">Start Streaming!</span>' +
+        '</li>' +
+    '</ul>' ;
