@@ -203,6 +203,18 @@ describe('DataHand', function(){
         })
     })
 
+    describe('parse', function(){
+        it('is not made yet', function(){
+            assert(false)
+        })
+    })
+
+    describe('stream', function(){
+        it('is not made yet', function(){
+            assert(false)
+        })
+    })
+
     describe('processTweet', function() {
         beforeEach(function () {
             DataHand = proxyquire('../../src/data-hand.js', {
@@ -234,18 +246,27 @@ describe('DataHand', function(){
             assert(!dataHand.limit)
         })
 
-        it('must post the stringified tweet to right url with right headers', function(done){
-            dataHand.rest = {
-                post: function(url, headers, data){
-                    assert.equal(url, 'http://data.streamr.com/json')
-                    assert.equal(headers.Stream, "test_stream_id")
-                    assert.equals(headers.Auth, "test_stream_auth")
-                    assert.equals(data, '{"test1":"test1","test2","test2"}')
-                    done()
-                    return {
-                        on: function(){}
+        it('must parse and post the stringified tweet to right url with right headers', function(done){
+            parsed = false
+            DataHand = proxyquire('../../src/data-hand.js', {
+                restler: {
+                    post: function(url, options){
+                        assert.equal(url, 'http://data.streamr.com/json')
+                        assert.equal(options.headers.Stream, "test_stream_id")
+                        assert.equal(options.headers.Auth, "test_stream_auth")
+                        assert.equal(options.data, '{"test1":"test1","test2":"test2"}')
+                        assert(parsed)
+                        done()
+                        return {
+                            on: function(){}
+                        }
                     }
                 }
+            })
+            dataHand = new DataHand(dataHandOptions)
+            dataHand.parse = function(tweet){
+                parsed = true
+                return tweet
             }
             dataHand.processTweet({
                 test1: "test1",
@@ -254,4 +275,5 @@ describe('DataHand', function(){
             assert(!dataHand.limit)
         })
     })
+
 })
