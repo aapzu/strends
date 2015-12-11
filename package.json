@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "mocha test/src;mocha-phantomjs test/test.html"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -15,10 +16,9 @@
     "underscore": "*",
     "underscore-express": "*",
     "twitter": "*",
-    "restler": "*"
-  },
-  "devDependencies": {
+    "restler": "*",
     "mocha": "*",
+    "phantomjs": "*",
     "mocha-phantomjs": "*",
     "assert": "*",
     "phantomjs": "*",

@@ -5,7 +5,6 @@ var DataHand
 
 describe('DataHand', function(){
     var options
-    var mockTwitter
     var dataHand
     before(function(){
         dataHandOptions = {
@@ -204,14 +203,109 @@ describe('DataHand', function(){
     })
 
     describe('parse', function(){
-        it('is not made yet', function(){
-            assert(false)
+        beforeEach(function(){
+            DataHand = proxyquire('../../src/data-hand.js', {
+                twitter: function(){}
+            })
+            dataHand = new DataHand(dataHandOptions)
+        })
+
+        it('must return an empty object if there is no text in the tweet', function(){
+            var tweet = {
+                id: "test",
+                field1: 1,
+                field2: 2
+            }
+            assert.equal(Object.keys(dataHand.parse(tweet)).length, 0)
+        })
+
+        it('must return the right kind of object if the tweet text matches', function(){
+            dataHand.list = ["some", "words", "maybe"]
+            var tweet = {
+                text: "This tweet has words which should attach the focus of the parser."
+            }
+            assert.equal(dataHand.parse(tweet).words.text, tweet.text)
+        })
+
+        it('must be able to match to more than one word', function(){
+            dataHand.list = ["some", "words", "maybe"]
+            var tweet = {
+                text: "This tweet has words which should maybe attach the focus of the parser."
+            }
+            assert.equal(dataHand.parse(tweet).words.text, tweet.text)
+            assert.equal(dataHand.parse(tweet).maybe.text, tweet.text)
+        })
+
+        it('must match also for tweet with different cases', function(){
+            dataHand.list = ["sOme", "WORDS", "Maybe"]
+            var tweet = {
+                text: "This tweet has wordS which should attach THE focus of the parser."
+            }
+            assert.equal(dataHand.parse(tweet).words.text, tweet.text)
         })
     })
 
     describe('stream', function(){
-        it('is not made yet', function(){
-            assert(false)
+        beforeEach(function(){
+            DataHand = proxyquire('../../src/data-hand.js', {
+                twitter: function(){
+                    return {
+                        stream: function(){}
+                    }
+                }
+            })
+            dataHand = new DataHand(dataHandOptions)
+        })
+
+        it('must call for buildRequest with the given words', function(done){
+            dataHand.buildRequest = function(words){
+                if(words == "test")
+                    done()
+            }
+            dataHand.stream("test")
+        })
+
+        it('must call Twitter.stream with right parameters', function(done){
+            DataHand = proxyquire('../../src/data-hand.js', {
+                twitter: function(){
+                    return {
+                        stream: function(opts, query, cb){
+                            if(opts == "statuses/filter" &&
+                            query.track == "test")
+                                done()
+                        }
+                    }
+                }
+            })
+            dataHand = new DataHand(dataHandOptions)
+            dataHand.buildRequest = function(words){
+                return words
+            }
+            dataHand.stream("test")
+        })
+
+        it('must call processData on "data"', function(){
+            DataHand = proxyquire('../../src/data-hand.js', {
+                twitter: function(){
+                    return {
+                        stream: function(opts, query, cb){
+                            cb({
+                                on: function(event, cb){
+                                    if(event == "data")
+                                    setTimeout(function(){
+                                        cb()
+                                    }, 50)
+                                }
+                            })
+                        }
+                    }
+                }
+            })
+            dataHand = new DataHand(dataHandOptions)
+            dataHand.processTweet = function(tweet){
+                done()
+            }
+            dataHand.stream("test")
         })
     })
 
