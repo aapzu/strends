@@ -122,6 +122,10 @@ function DataHand(options) {
         return tweetObject
     };
 
+    this.isStreaming = function(){
+        return this.twitterStream != undefined
+    }
+
     return this
 }
 

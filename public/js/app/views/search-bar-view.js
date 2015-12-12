@@ -16,6 +16,7 @@ Strends.Views.SearchBarView = Backbone.View.extend({
     bindEvents: function(){
         var _this = this
         this.searchButton.click(function(e){
+            _this.search(e)
             e.preventDefault()
         })
         this.streamButton.click(function(e){

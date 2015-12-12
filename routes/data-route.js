@@ -23,4 +23,12 @@ router.get('/destroy', function(req, res, next){
 	res.send({success:true})
 })
 
+router.get('/isStreaming', function(rew, res, next){
+	var isStreaming = dataHand.isStreaming()
+	res.send({
+		success: true,
+		isStreaming: isStreaming
+	})
+})
+
 module.exports = router;

@@ -19,13 +19,14 @@
 <script src="lib/sinon.js"></script>
 
 <!-- JavaScript Core Libraries -->
-<script src="../public/plugins/AdminLTE/js/AdminLTE/app.js"></script>
 <script src="../public/plugins/jquery/jquery-2.1.4.min.js"></script>
+<script src="../public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="../public/plugins/underscore/underscore-min.js"></script>
 <script src="../public/plugins/backbone/backbone-min.js"></script>
 <script src="../public/plugins/backbone.localStorage/backbone.localStorage.js"></script>
 <script src="../public/plugins/socket.io/socket.io.js"></script>
 <script src="../public/plugins/streamr-client/streamr-client.js"></script>
+<script src="../public/plugins/AdminLTE/js/AdminLTE/app.js"></script>
 
 <!-- JavaScript Application Libraries -->
 <script src="../public/js/app/namespace.js"></script>
@@ -61,7 +62,17 @@
 
 <!-- Include our specs. -->
 
-<!--<script src="src/data-hand-test.js"></script>-->
+<!-- Collection tests -->
+<script src="app/collections/dashboard-item-collection-test.js"></script>
+
+<!-- Model tests -->
+<script src="app/models/dashboard-test.js"></script>
+<script src="app/models/dashboard-item-test.js"></script>
+
+<!-- View tests -->
+<script src="app/views/dashboard-view-test.js"></script>
+<script src="app/views/dashboard-item-view-test.js"></script>
+<script src="app/views/search-bar-view-test.js"></script>
 
 
 

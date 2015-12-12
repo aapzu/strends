@@ -6,6 +6,7 @@ var DataHand
 describe('DataHand', function(){
     var options
     var dataHand
+
     before(function(){
         dataHandOptions = {
             twitter: {
@@ -370,4 +371,25 @@ describe('DataHand', function(){
         })
     })
 
+    describe('isStreaming', function(){
+        beforeEach(function(){
+            DataHand = proxyquire('../../src/data-hand.js', {
+                twitter: function(){
+                    return {
+                        stream: function(){}
+                    }
+                }
+            })
+            dataHand = new DataHand(dataHandOptions)
+        })
+
+        it('must return false if there is no stream', function(){
+            assert(!dataHand.isStreaming())
+        })
+
+        it('must return true if there is a stream', function(){
+            dataHand.twitterStream = {}
+            assert(dataHand.isStreaming())
+        })
+    })
 })

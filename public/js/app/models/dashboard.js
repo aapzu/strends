@@ -8,6 +8,12 @@ Strends.Models.Dashboard = Backbone.Model.extend({
         // If the 'update' event isn't trigged, there may be problems with the automatic updating
         this.collection.trigger("update")
 
+        $.getJSON(baseUrl+'/data/isStreaming/', function(res){
+            if(res.success)
+                if(!res.isStreaming)
+                    _this.streamAll()
+        })
+
         this.client = new StreamrClient({
             // Connection options and default values
             server: 'data.streamr.com',
@@ -48,19 +54,17 @@ Strends.Models.Dashboard = Backbone.Model.extend({
             this.destroyStream()
     },
 
-    stream: function(query){
-        $.get(baseUrl+'/data/stream/'+query)
-    },
+    stream: function(query, method){
+        if(!method)
+            method = "stream"
+        $.getJSON(baseUrl+'/data/'+method+'/'+query, {}, function(res){
+            if(res.success)
+                $.pnotify({
+                    type: "success",
+                    title: "Streaming started!",
+                    delay: 4000
+                })
+        })
 
-    addWord: function(word){
-        $.get(baseUrl+'/data/addWord/'+word)
-    },
-
-    removeWord: function(word){
-        $.get(baseUrl+'/data/removeWord/'+word)
-    },
-
-    destroyStream: function(){
-        $.get(baseUrl+'/data/destroy')
     }
 })
