@@ -55,9 +55,10 @@ Strends.Views.DashboardView = Backbone.View.extend({
 
         this.listenTo(this.model.collection, "update sort", function(){
             // TODO: Make this more efficient
-            _.each(_this.model.collection.models, function(model){
-                _this.row.append(model.view.$el)
-            })
+            if(_this.model.orderChanged)
+                _.each(_this.model.collection.models, function(model){
+                    _this.row.append(model.view.$el)
+                })
         })
     },
 

@@ -40,6 +40,10 @@ function DataHand(options) {
     }
 
     this.stream = function(words){
+        if(!words){
+            this.destroy()
+            return;
+        }
         var request = this.buildRequest(words)
 
         console.log("Streaming started! Request: '"+request+"'")
@@ -113,7 +117,12 @@ function DataHand(options) {
             })
         }
         return tweetObject
-    };
+    }
+
+    this.destroy = function() {
+        if(this.twitterStream)
+            this.twitterStream.destroy()
+    }
 
     this.isStreaming = function(){
         return this.twitterStream != undefined

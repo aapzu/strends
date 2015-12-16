@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var app = express()
 
-/* GET home page. */
+
 router.get('/stream/:query', function(req, res, next) {
 	dataHand.stream(req.params.query)
 	res.send({success:true})

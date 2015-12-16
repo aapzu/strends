@@ -8,7 +8,9 @@ Strends.Models.Dashboard = Backbone.Model.extend({
         // If the 'update' event isn't trigged, there may be problems with the automatic updating
         this.collection.trigger("update")
 
+        // Ask if the dataHand is already streaming and start it if it's not
         $.getJSON(baseUrl+'/data/isStreaming/', function(res){
+            console.log(res)
             if(res.success)
                 if(!res.isStreaming)
                     _this.streamAll()
@@ -29,19 +31,26 @@ Strends.Models.Dashboard = Backbone.Model.extend({
                 })
             }
         )
-        this.messageGot = false
+        // TODO: make this smarter
         setInterval(function(){
-            if(_this.messageGot){
-                _this.collection.sort()
-                _this.messageGot = false
-            }
+            _this.collection.sort()
+            _this.orderChanged = false
         },2000)
+
+        this.bindEvents()
+    },
+
+    bindEvents: function(){
+        var _this = this
+        this.listenTo(this.collection, "change:rank", function(){
+            _this.orderChanged = true
+        })
     },
 
     sendMessage: function(word, message){
         this.messageGot = true
         var model = this.collection.find(function(m){
-            return m.get("word") == word
+            return m.get("word").toLowerCase() == word.toLowerCase()
         })
         if(model)
             model.processTweet(message)

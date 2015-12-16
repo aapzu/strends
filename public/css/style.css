@@ -60,6 +60,10 @@ body {
     font-size: 44px;
 }
 
+#content-wrapper .dashboard-item .count {
+    float: right;
+}
+
 #content-wrapper .dashboard-item .tweet-container {
     position: absolute;
     bottom: 0;

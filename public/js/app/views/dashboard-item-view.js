@@ -24,6 +24,7 @@ Strends.Views.DashboardItemView = Backbone.View.extend({
         this.wordEl = this.$el.find(".word")
         this.wordInput = this.$el.find(".word-input input")
         this.tweetEl = this.$el.find(".tweet-container")
+        this.countEl = this.$el.find(".tweet-count")
 
         this.bindEvents()
 
@@ -36,6 +37,7 @@ Strends.Views.DashboardItemView = Backbone.View.extend({
         this.listenTo(this.model, "change", this.update)
         this.listenTo(this.model, "message", function(msg){
             _this.tweetEl.html(_this.tweetTemplate(msg))
+            _this.countEl.html(this.model.tweets.length)
         })
     },
 
@@ -43,9 +45,6 @@ Strends.Views.DashboardItemView = Backbone.View.extend({
         this.model.destroy()
     },
 
-    raiseUp: function(){
-        this.model.raiseUp()
-    },
 
     update: function(e){
         this.rankEl.html(this.model.get("rank"))

@@ -12,24 +12,6 @@ Strends.Models.DashboardItem = Backbone.Model.extend({
         })
     },
 
-    raiseUp: function() {
-        var i = this.collection.indexOf(this)
-        var oldRank = this.get("rank")
-        if(oldRank > 0) {
-            this.collection.at(i - 1).set("rank", oldRank)
-            this.set("rank", oldRank - 1)
-        }
-    },
-
-    lowerDown: function() {
-        var i = this.indexOf(this)
-        var oldRank = this.get("rank")
-        if(oldRank < this.collection.size()-1) {
-            this.collection.at(i + 1).set("rank", oldRank)
-            this.set("rank", oldRank + 1)
-        }
-    },
-
     processTweet: function(tweet){
         if(!this.tweets)
             this.tweets = []

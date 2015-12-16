@@ -19,10 +19,10 @@ Strends.Templates.DashboardItemTemplate = '' +
                     '</span>' +
                 '</h1>' +
             '</div>'+
-            '<span class="tweet-count">' +
-                '0' +
-            '</span>' +
-            '<span> tweets</span>' +
+            '<p class="count">' +
+                '<span class="tweet-count">0</span>' +
+                '<span> tweets</span>' +
+            '</p>' +
         '</div>' +
         '<div class="icon">' +
             '<i class="ion ion-bag"></i>' +
@@ -58,8 +58,7 @@ Strends.Templates.SearchBarTemplate = '' +
         '</li>' +
         '<li class="text-center">' +
             '<a class="streaming-btn-container">' +
-                '<button type="button" class="start-streaming-btn btn btn-sm btn-primary">Start Streaming!</button>' +
-                '<button type="button" class="stop-streaming-btn btn btn-sm btn-danger dropdown-toggle">Stop</button>' +
+                '<button type="button" class="start-streaming-btn btn btn-sm btn-primary">Update parameters!</button>' +
             '</a>' +
         '</li>' +
     '</ul>' ;
