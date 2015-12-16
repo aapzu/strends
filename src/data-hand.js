@@ -5,6 +5,8 @@ var rest = require('restler');
 function DataHand(options) {
     var _this = this;
 
+    this.limit = true
+
     this.list = []
 
     this.client = new Twitter({
@@ -20,10 +22,11 @@ function DataHand(options) {
             if(words !== undefined && words != '')
                 _this.list = words;
             request = "";
-            _this.list.forEach(function (item) {
-                request += item;
-                request += ","
-            });
+            for(var i = 0; i < this.list.length; i++){
+                request += this.list[i]
+                if(i != this.list.length-1)
+                    request += ","
+            }
         } else {
             request = words;
             _this.list = words.split(",")
@@ -53,13 +56,13 @@ function DataHand(options) {
     };
 
     this.processTweet = function(tweet){
-        this.limit = true
         if (tweet.limit) {
-            limit = true
+            this.limit = true
             console.log("Rate limited: " + tweet.limit.track);
         } else {
-            var message = JSON.stringify(_this.parse(tweet))
-            if(limit){
+            var message = _this.parse(tweet)
+            message = JSON.stringify(message)
+            if(this.limit){
                 console.log("Tweet received!")
                 this.limit = false
             }
@@ -98,15 +101,6 @@ function DataHand(options) {
         this.stream()
     }
 
-    this.destroy = function(){
-        if(this.twitterStream){
-            this.twitterStream.destroy()
-            console.log("Stream destroyed!")
-        } else {
-            console.log("No stream found!")
-        }
-    }
-
     this.parse = function(tweet) {
         var tweetObject = {};
         if(tweet.text) {
@@ -116,7 +110,6 @@ function DataHand(options) {
                 if (text.match(request)) {
                     tweetObject[request] = tweet
                 }
-
             })
         }
         return tweetObject

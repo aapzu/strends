@@ -16,8 +16,13 @@ body {
     padding: 10px;
 }
 
+#strends-sidebar .sidebar-menu ul li a.streaming-btn-container {
+    padding-bottom: 10px;
+}
+
 #strends-sidebar .sidebar-menu ul li .start-streaming-btn {
-    margin: 10px;
+    margin-left: -25px;
+    margin-right: 5px;
 }
 
 #search-input {
@@ -37,8 +42,22 @@ body {
     max-height: 170px;
 }
 
+#content-wrapper .dashboard-item .rank {
+    font-size: 25px;
+    margin-left: 5px;
+}
+
 #content-wrapper .dashboard-item .inner {
     height: 100px;
+}
+
+#content-wrapper .dashboard-item .title {
+    margin-top: 10px;
+    margin-left: 27px;
+}
+
+#content-wrapper .dashboard-item .title h1 {
+    font-size: 44px;
 }
 
 #content-wrapper .dashboard-item .tweet-container {

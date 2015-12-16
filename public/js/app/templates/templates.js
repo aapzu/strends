@@ -2,27 +2,32 @@
 Strends.Templates.DashboardTemplate = '<div class="row"></div>';
 
 Strends.Templates.DashboardItemTemplate = '' +
-    '<div class="col-lg-4 col-md-6 col-sm-12">' +
-        '<div class="dashboard-item small-box bg-<%= color %>">' +
-            '<div class="pull-right box-tools">' +
-                '<i class="edit-button fa fa-pencil"></i>' +
-                '<i class="remove-di-button fa fa-times"></i>' +
-            '</div>'+
-            '<div class="inner">'+
-                '<h3>' +
-                    '<span class="rank">#<%= rank %></span>' +
-                    '&nbsp;-&nbsp;' +
+    '<div class="dashboard-item small-box bg-<%= color %>">' +
+        '<div class="pull-left">' +
+            '<span class="rank"><%= rank %></span>' +
+        '</div>' +
+        '<div class="pull-right box-tools">' +
+            '<i class="edit-button fa fa-pencil"></i>' +
+            '<i class="remove-di-button fa fa-times"></i>' +
+        '</div>'+
+        '<div class="inner">'+
+            '<div class="title">' +
+                '<h1>' +
                     '<span class="word"><%= word %></span>' +
                     '<span class="word-input form-inline">' +
                         '<input class="form-control" value="<%= word %>"/>' +
                     '</span>' +
-                '</h3>' +
-            '</div>' +
-            '<div class="icon">' +
-                '<i class="ion ion-bag"></i>' +
-            '</div>' +
-            '<div class="tweet-container small-box-footer"></div>'
+                '</h1>' +
+            '</div>'+
+            '<span class="tweet-count">' +
+                '0' +
+            '</span>' +
+            '<span> tweets</span>' +
         '</div>' +
+        '<div class="icon">' +
+            '<i class="ion ion-bag"></i>' +
+        '</div>' +
+        '<div class="tweet-container small-box-footer"></div>'
     '</div>' ;
 
 Strends.Templates.TweetTemplate = '' +
@@ -31,8 +36,6 @@ Strends.Templates.TweetTemplate = '' +
             '<%= text %>' +
         '</span>' +
     '</a>' ;
-
-
 
 Strends.Templates.SearchBarTemplate = '' +
     '<a>' +
@@ -44,7 +47,7 @@ Strends.Templates.SearchBarTemplate = '' +
         '<li>' +
             '<form class="sidebar-form search-form">' +
                 '<div class="input-group">' +
-                    '<input type="text" id="search-input" class="form-control" placeholder="Search...">' +
+                    '<input type="text" id="search-input" class="form-control" autocomplete="off" placeholder="Search...">' +
                     '<span class="input-group-btn">' +
                         '<button type="submit" id="search-btn" class="btn btn-flat">' +
                             '<i class="fa fa-search"></i>' +
@@ -54,6 +57,9 @@ Strends.Templates.SearchBarTemplate = '' +
             '</form>' +
         '</li>' +
         '<li class="text-center">' +
-            '<span class="start-streaming-btn btn btn-sm btn-primary">Start Streaming!</span>' +
+            '<a class="streaming-btn-container">' +
+                '<button type="button" class="start-streaming-btn btn btn-sm btn-primary">Start Streaming!</button>' +
+                '<button type="button" class="stop-streaming-btn btn btn-sm btn-danger dropdown-toggle">Stop</button>' +
+            '</a>' +
         '</li>' +
     '</ul>' ;

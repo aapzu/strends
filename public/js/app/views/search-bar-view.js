@@ -7,6 +7,7 @@ Strends.Views.SearchBarView = Backbone.View.extend({
         this.input = this.$el.find("#search-input")
         this.searchButton = this.$el.find("#search-btn")
         this.streamButton = this.$el.find(".start-streaming-btn")
+        this.stopButton = this.$el.find(".stop-streaming-btn")
 
         this.bindEvents()
 
@@ -16,12 +17,17 @@ Strends.Views.SearchBarView = Backbone.View.extend({
     bindEvents: function(){
         var _this = this
         this.searchButton.click(function(e){
-            _this.search(e)
             e.preventDefault()
+            _this.search(e)
         })
         this.streamButton.click(function(e){
+            e.preventDefault()
             _this.search(e)
             _this.stream(e)
+        })
+        this.stopButton.click(function(e){
+            e.preventDefault()
+            _this.trigger("destroy")
         })
     },
 

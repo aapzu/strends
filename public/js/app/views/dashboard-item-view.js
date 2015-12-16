@@ -1,5 +1,7 @@
 
 Strends.Views.DashboardItemView = Backbone.View.extend({
+    className: "col-lg-4 col-md-6 col-sm-12",
+
     events: {
         "click .remove-di-button":"delete",
         "click .edit-button": "edit",
@@ -15,7 +17,6 @@ Strends.Views.DashboardItemView = Backbone.View.extend({
     },
 
     render: function(){
-        this.$el.empty()
         this.$el.append(this.template(this.model.toJSON()))
 
         // Add more of these
@@ -47,7 +48,7 @@ Strends.Views.DashboardItemView = Backbone.View.extend({
     },
 
     update: function(e){
-        this.rankEl.html("#"+this.model.get("rank"))
+        this.rankEl.html(this.model.get("rank"))
         this.wordEl.html(this.model.get("word"))
     },
 

@@ -66,7 +66,7 @@ describe('DataHand', function(){
         })
 
         afterEach('check the request and list', function(){
-            assert(request == "test1,test2,test3," || request == "test1,test2,test3")
+            assert(request == "test1,test2,test3")
             assert.equal(["test1","test2","test3"].toString(), dataHand.list.toString())
             request = undefined
         })
@@ -177,29 +177,6 @@ describe('DataHand', function(){
                 done()
             }
             dataHand.addWord("test")
-        })
-    })
-
-    describe('destroy', function(){
-        beforeEach(function(){
-            DataHand = proxyquire('../../src/data-hand.js', {
-                twitter: function(){}
-            })
-            dataHand = new DataHand(dataHandOptions)
-        })
-
-        it('must not throw error if there is no twitterStream defined', function(done){
-            dataHand.destroy()
-            done()
-        })
-
-        it('must destroy the stream if the twitterStream is defined', function(done){
-            dataHand.twitterStream = {
-                destroy: function(){
-                    done()
-                }
-            }
-            dataHand.destroy()
         })
     })
 
@@ -335,6 +312,10 @@ describe('DataHand', function(){
         })
 
         it('must change the limit value back to false', function(){
+            dataHand.limit = false
+            dataHand.processTweet({
+                limit: true
+            })
             dataHand.processTweet({
                 test: "test"
             })

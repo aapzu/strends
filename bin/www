@@ -90,4 +90,4 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-console.log("Strends started in port "+app.get("port")+"!")
+console.log("Strends started in the port "+app.get("port"))

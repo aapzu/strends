@@ -13,8 +13,6 @@ var dataRoute = require('./routes/data-route');
 var app = express();
 var base = express.Router();
 
-require('underscore-express')(app);
-
 // Set the base url /strends
 app.use('/strends', base);
 
@@ -23,9 +21,10 @@ base.use('/', indexRoute);
 base.use('/data', dataRoute)
 
 // view engine setup
+require('underscore-express')(app);
 app.engine('html',cons.underscore);
+
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

@@ -27,31 +27,35 @@ Strends.Models.Dashboard = Backbone.Model.extend({
                 _.each(message, function(obj, field){
                     _this.sendMessage(field, obj)
                 })
-            },
-            {
-                resend_last: 0
             }
         )
+        this.messageGot = false
+        setInterval(function(){
+            if(_this.messageGot){
+                _this.collection.sort()
+                _this.messageGot = false
+            }
+        },2000)
     },
 
     sendMessage: function(word, message){
+        this.messageGot = true
         var model = this.collection.find(function(m){
             return m.get("word") == word
         })
         if(model)
-            model.trigger("message", message)
+            model.processTweet(message)
     },
 
     streamAll: function(){
         var query = ""
-        _.each(this.collection.models, function(m){
-            query += m.get("word")
-            query += ","
-        })
+        for(var i = 0; i < this.collection.models.length; i++){
+            query += this.collection.models[i].get("word")
+            if(i != this.collection.models.length-1)
+                query += ","
+        }
         if(query)
             this.stream(query)
-        else
-            this.destroyStream()
     },
 
     stream: function(query, method){
@@ -62,9 +66,8 @@ Strends.Models.Dashboard = Backbone.Model.extend({
                 $.pnotify({
                     type: "success",
                     title: "Streaming started!",
-                    delay: 4000
+                    delay: 4000,
                 })
         })
-
     }
 })

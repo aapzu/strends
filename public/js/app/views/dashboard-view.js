@@ -45,14 +45,20 @@ Strends.Views.DashboardView = Backbone.View.extend({
             _this.model.streamAll()
         })
 
+        this.listenTo(this.searchBar, "destroy", function(){
+            _this.model.destroyStream()
+        })
+
         this.listenTo(this.model.collection, "add", function(model){
             _this.addDashboardItem(model)
         })
 
-        // Doesn't work yet
-        /*this.listenTo(this.model.collection, "change:rank", function(model, rank){
-            model.view.$el.insertBefore(_this.row.children()[rank])
-        })*/
+        this.listenTo(this.model.collection, "update sort", function(){
+            // TODO: Make this more efficient
+            _.each(_this.model.collection.models, function(model){
+                _this.row.append(model.view.$el)
+            })
+        })
     },
 
     randomColor: function(){
