@@ -7,7 +7,7 @@ function DataHand(options) {
 
     this.limit = true
 
-    this.list = []
+    this.wordList = {}
 
     this.client = new Twitter({
         consumer_key: options.twitter.consumer_key,
@@ -17,40 +17,52 @@ function DataHand(options) {
     });
 
     this.buildRequest = function(words){
-        var request
-        if (words instanceof Array || words === undefined || words == '') {
-            if(words !== undefined && words != '')
-                _this.list = words;
-            request = "";
-            for(var i = 0; i < this.list.length; i++){
-                request += this.list[i]
-                if(i != this.list.length-1)
-                    request += ","
+        this.request = ""
+        this.wordList = {}
+        if (_.isObject(words) || _.isArray(words) || words === undefined || words == '') {
+            if(words !== undefined && words != ''){
+                if(words instanceof Array)
+                    _.each(words, function(word){
+                        _this.wordList[word] = 1
+                    })
+                else if(_.isObject(words))
+                    this.wordList = words
             }
+            this.request = "";
+            var max = _.keys(this.wordList).size() - 1
+            _.each(_.keys(this.wordList, function(word){
+                if(max == 0){
+                    request += word
+                } else {
+                    request += word + ","
+                }
+            }))
         } else {
-            request = words;
-            _this.list = words.split(",")
-            _this.list.forEach(function (item) {
+            this.request = words;
+            var list = words.split(",")
+            list.forEach(function(item){
                 item = item.trim()
+                this.wordList[item] = 1
             })
         }
-        // We must URL encode the request first
-        request = encodeURI(request)
-        return request
+        // We must URL encode the request
+        this.request = encodeURI(this.request)
     }
 
     this.stream = function(words){
         if(!words){
-            this.destroy()
-            return;
+            words = this.wordList
         }
-        var request = this.buildRequest(words)
+        this.buildRequest(words)
 
-        console.log("Streaming started! Request: '"+request+"'")
-        this.client.stream('statuses/filter', {track: request}, function(stream) {
+        console.log("Streaming started! Request: '"+this.request+"'")
+        this.client.stream('statuses/filter', {track: this.request}, function(stream) {
             _this.twitterStream = stream
             stream.on('data', function(tweet) {
-                _this.processTweet(tweet)
+                if (typeof tweet === 'string' || tweet instanceof String)
+                    console.log(tweet)
+                else
+                    _this.processTweet(tweet)
             });
 
             stream.on('error', function(error) {
@@ -65,7 +77,11 @@ function DataHand(options) {
             console.log("Rate limited: " + tweet.limit.track);
         } else {
             var message = _this.parse(tweet)
-            message = JSON.stringify(message)
+            try {
+                message = JSON.stringify(message)
+            } catch (e) {
+                console.log(message)
+            }
             if(this.limit){
                 console.log("Tweet received!")
                 this.limit = false
@@ -82,34 +98,31 @@ function DataHand(options) {
         }
     }
 
+    this.pushToWordList = function(word){
+        this.wordList[word] = ( this.wordList[word] !== undefined ? this.wordList[word] : 0 ) +1
+    }
+
     this.addWord = function(word){
-        if(!_.contains(this.list, word)){
-            this.list.push(word)
-        }
+        this.pushToWordList(word)
         this.stream()
     }
 
     this.removeWord = function(word) {
-        this.list = _.without(this.list, word)
-        if (this.list.length == 0) {
+        this.wordList[word] = this.wordList[word] - 1
+        if(this.wordList[word] == 0)
+            this.wordList[word] = undefined
+        if (_.keys(this.wordList).length == 0) {
             this.destroy()
         } else {
             this.stream()
         }
     }
 
-    this.changeWord = function(word, newWord){
-        var index = this.list.indexOf(word)
-        if(index !== -1)
-            this.list[index] = newWord
-        this.stream()
-    }
-
     this.parse = function(tweet) {
         var tweetObject = {};
-        if(tweet.text) {
+        if(!tweet.text) {
             var text = tweet.text.toLowerCase();
-            _.each(_this.list, function (request) {
+            _.each(_.keys(this.wordList), function (request) {
                 request = escape(request).toLowerCase()
                 if (text.match(request)) {
                     tweetObject[request] = tweet

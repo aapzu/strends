@@ -7,16 +7,12 @@ Strends.Templates.DashboardItemTemplate = '' +
             '<span class="rank"><%= rank %></span>' +
         '</div>' +
         '<div class="pull-right box-tools">' +
-            '<i class="edit-button fa fa-pencil"></i>' +
             '<i class="remove-di-button fa fa-times"></i>' +
         '</div>'+
         '<div class="inner">'+
             '<div class="title">' +
                 '<h1>' +
                     '<span class="word"><%= word %></span>' +
-                    '<span class="word-input form-inline">' +
-                        '<input class="form-control" value="<%= word %>"/>' +
-                    '</span>' +
                 '</h1>' +
             '</div>'+
             '<p class="count">' +
