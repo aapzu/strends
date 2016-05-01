@@ -1,5 +1,7 @@
 var _ = require('underscore');
 var Twitter = require('twitter');
+var twitterConfig = require('../config/twitter')
+var streamrConfig = require('../config/streamr')
 var rest = require('restler');
 
 function DataHand(options) {
@@ -9,18 +11,18 @@ function DataHand(options) {
 
     this.wordList = {}
 
-    this.client = new Twitter({
-        consumer_key: options.twitter.consumer_key,
-        consumer_secret: options.twitter.consumer_secret,
-        access_token_key: options.twitter.access_token_key,
-        access_token_secret: options.twitter.access_token_secret
+    this.twitterClient = new Twitter({
+        consumer_key: twitterConfig.consumer_key,
+        consumer_secret: twitterConfig.consumer_secret,
+        access_token_key: twitterConfig.access_token_key,
+        access_token_secret: twitterConfig.access_token_secret
     });
 
     this.buildRequest = function(words){
         this.request = ""
-        this.wordList = {}
         if (_.isObject(words) || _.isArray(words) || words === undefined || words == '') {
             if(words !== undefined && words != ''){
+                this.wordList = {}
                 if(words instanceof Array)
                     _.each(words, function(word){
                         _this.wordList[word] = 1
@@ -29,20 +31,21 @@ function DataHand(options) {
                     this.wordList = words
             }
             this.request = "";
-            var max = _.keys(this.wordList).size() - 1
-            _.each(_.keys(this.wordList, function(word){
+            var max = (_.keys(this.wordList)).length - 1
+            _.each(_.keys(this.wordList), function(word){
                 if(max == 0){
-                    request += word
+                    _this.request += word
                 } else {
-                    request += word + ","
+                    _this.request += word + ","
                 }
-            }))
+                max--;
+            })
         } else {
             this.request = words;
             var list = words.split(",")
-            list.forEach(function(item){
+            _.each(list, function(item){
                 item = item.trim()
-                this.wordList[item] = 1
+                _this.wordList[item] = 1
             })
         }
         // We must URL encode the request
@@ -56,13 +59,10 @@ function DataHand(options) {
         this.buildRequest(words)
 
         console.log("Streaming started! Request: '"+this.request+"'")
-        this.client.stream('statuses/filter', {track: this.request}, function(stream) {
+        this.twitterClient.stream('statuses/filter', {track: this.request}, function(stream) {
             _this.twitterStream = stream
             stream.on('data', function(tweet) {
-                if (typeof tweet === 'string' || tweet instanceof String)
-                    console.log(tweet)
-                else
-                    _this.processTweet(tweet)
+                _this.processTweet(tweet)
             });
 
             stream.on('error', function(error) {
@@ -77,22 +77,18 @@ function DataHand(options) {
             console.log("Rate limited: " + tweet.limit.track);
         } else {
             var message = _this.parse(tweet)
-            try {
-                message = JSON.stringify(message)
-            } catch (e) {
-                console.log(message)
-            }
-            if(this.limit){
+            message = JSON.stringify(message)
+            if (this.limit) {
                 console.log("Tweet received!")
                 this.limit = false
             }
             rest.post('http://data.streamr.com/json', {
                 headers: {
-                    Stream: options.streamr.stream_id,
-                    Auth: options.streamr.stream_auth
+                    Stream: streamrConfig.stream_id,
+                    Auth: streamrConfig.stream_auth
                 },
                 data: message
-            }).on('complete', function(data, response) {
+            }).on('complete', function (data, response) {
                 if (!response) console.log("Warn: response was null")
             });
         }
@@ -107,10 +103,18 @@ function DataHand(options) {
         this.stream()
     }
 
+    this.addWordList = function(wordList){
+        var _this = this
+        _.each(wordList, function(word){
+            _this.pushToWordList(word)
+        })
+        this.stream()
+    }
+
     this.removeWord = function(word) {
         this.wordList[word] = this.wordList[word] - 1
         if(this.wordList[word] == 0)
-            this.wordList[word] = undefined
+            delete this.wordList[word]
         if (_.keys(this.wordList).length == 0) {
             this.destroy()
         } else {
@@ -120,9 +124,10 @@ function DataHand(options) {
 
     this.parse = function(tweet) {
         var tweetObject = {};
-        if(!tweet.text) {
+        if(tweet.text) {
             var text = tweet.text.toLowerCase();
-            _.each(_.keys(this.wordList), function (request) {
+            var keys = _.keys(this.wordList)
+            _.each(keys, function (request) {
                 request = escape(request).toLowerCase()
                 if (text.match(request)) {
                     tweetObject[request] = tweet

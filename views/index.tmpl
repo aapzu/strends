@@ -85,7 +85,9 @@
         <script>
             var baseUrl = "<%= baseUrl %>"
             var dashboard = new Strends.Views.DashboardView({
-                model: new Strends.Models.Dashboard({streamId:"7v6Wyy8wTmiZ7nKNjDMSyA"}),
+                model: new Strends.Models.Dashboard({
+                    streamId: "<%= streamId %>"
+                }),
                 el: "#content-wrapper .content",
                 searchBarEl: "#strends-search"
             })

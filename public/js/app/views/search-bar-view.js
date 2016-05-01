@@ -9,6 +9,10 @@ Strends.Views.SearchBarView = Backbone.View.extend({
         this.streamButton = this.$el.find(".start-streaming-btn")
         this.stopButton = this.$el.find(".stop-streaming-btn")
 
+        this.lastStarted
+        this.delay = 15000
+        this.allowedToSearch = true
+
         this.bindEvents()
 
         return this.$el
@@ -32,7 +36,20 @@ Strends.Views.SearchBarView = Backbone.View.extend({
     },
 
     stream: function(e){
-        this.trigger("stream")
+        var _this = this
+        if(!this.canSearch()) {
+            var notice = $.pnotify({
+                type: "info",
+                text: "You need to wait " +
+                    (16 - Math.ceil((Date.now() - _this.lastStarted) / 1000))
+                + " more seconds before you can start streaming again!",
+                delay: 4000
+            })
+            setInterval(function() {
+                var options = notice.options
+            })
+        } else
+            this.trigger("stream")
     },
 
     search: function(e, query){
@@ -42,6 +59,20 @@ Strends.Views.SearchBarView = Backbone.View.extend({
         if(query) {
             this.trigger("search", query)
             this.input.val("")
+        }
+    },
+
+    canSearch: function() {
+        var _this = this
+        if(this.allowedToSearch) {
+            this.timeout = setTimeout(function(){
+                _this.allowedToSearch = true
+            }, _this.delay)
+            this.lastStarted = Date.now()
+            this.allowedToSearch = false
+            return true
+        } else {
+            return false
         }
     }
 })

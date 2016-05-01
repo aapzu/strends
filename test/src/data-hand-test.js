@@ -1,10 +1,11 @@
 var assert = require('assert')
 var proxyquire = require('proxyquire')
+var _ = require('underscore')
 
 var DataHand
 
 describe('DataHand', function(){
-    var options
+    var dataHandOptions
     var dataHand
 
     before(function(){
@@ -47,28 +48,27 @@ describe('DataHand', function(){
             dataHand = new DataHand(dataHandOptions)
         })
         it('must build the request if the words are in a string', function(){
-            request = dataHand.buildRequest("test1,test2,test3")
+            dataHand.buildRequest("test1,test2,test3")
         })
         it('must build the request if the words are in a list', function(){
-            request = dataHand.buildRequest([
+            dataHand.buildRequest([
                 "test1",
                 "test2",
                 "test3"
             ])
         })
         it('must use the existing list if the words are undefined', function(){
-            dataHand.list = [
-                "test1",
-                "test2",
-                "test3"
-            ]
-            request = dataHand.buildRequest()
+            dataHand.wordList = {
+                "test1": 1,
+                "test2": 1,
+                "test3": 1
+            }
+            dataHand.buildRequest()
         })
 
         afterEach('check the request and list', function(){
-            assert(request == "test1,test2,test3")
-            assert.equal(["test1","test2","test3"].toString(), dataHand.list.toString())
-            request = undefined
+            assert(dataHand.request == "test1,test2,test3")
+            assert.equal({"test1":1,"test2":1,"test3":1}.toString(), dataHand.wordList.toString())
         })
     })
 
@@ -83,16 +83,16 @@ describe('DataHand', function(){
         it('must add the word if it is not in the list', function(){
             dataHand.stream = function(){}
             dataHand.addWord("test")
-            assert.equal(dataHand.list.length, 1)
-            assert.equal(dataHand.list[0], "test")
+            assert.equal(_.keys(dataHand.wordList).length, 1)
+            assert.equal(dataHand.wordList.test, 1)
         })
 
-        it('must not add the word if it is already in the list', function(){
+        it('must change the number of word to 2 if the word is already in the list', function(){
             dataHand.stream = function(){}
-            dataHand.list = ["test"]
+            dataHand.wordList = {test: 1}
             dataHand.addWord("test")
-            assert.equal(dataHand.list.length, 1)
-            assert.equal(dataHand.list[0], "test")
+            assert.equal(_.keys(dataHand.wordList).length, 1)
+            assert.equal(dataHand.wordList.test, 2)
         })
 
         it('must call stream', function(done){
@@ -101,6 +101,28 @@ describe('DataHand', function(){
                 done()
             }
             dataHand.addWord("test")
+        })
+    })
+
+    describe('addWordList', function() {
+        beforeEach(function(){
+            DataHand = proxyquire('../../src/data-hand.js', {
+                twitter: function(){}
+            })
+            dataHand = new DataHand(dataHandOptions)
+        })
+
+        it('should add every word in the given list', function(done) {
+            var list = ["just", "some", "random", "words", "for", "testing"]
+            var i = 0
+            dataHand.pushToWordList = function(word) {
+                assert.equal(word, list[i])
+                i++;
+            }
+            dataHand.stream = function() {
+                done()
+            }
+            dataHand.addWordList(list)
         })
     })
 
@@ -114,16 +136,24 @@ describe('DataHand', function(){
 
         it('must remove the word if it is in the list', function(){
             dataHand.stream = function(){}
-            dataHand.list = ["test", "test2"]
+            dataHand.wordList = {test: 1, test2: 1}
             dataHand.removeWord("test")
-            assert.equal(dataHand.list.toString(), ["test2"].toString())
+            assert.equal(dataHand.wordList.toString(), {"test2":1}.toString())
         })
 
         it('must do nothing if the word is not in the list', function(){
             dataHand.stream = function(){}
-            dataHand.list = ["test", "test2"]
+            dataHand.wordList = {test: 1, test2: 1}
             dataHand.removeWord("test3")
-            assert.equal(dataHand.list.toString(), ["test","test2"].toString())
+            assert.equal(dataHand.wordList.toString(), {test: 1, test2: 1}.toString())
+        })
+
+        it('must reduce the amount if the word is in the list more than once', function(){
+            dataHand.stream = function(){}
+            dataHand.wordList = {test: 10, test2: 2}
+            dataHand.removeWord("test")
+            dataHand.removeWord("test2")
+            assert.equal(dataHand.wordList.toString(), {test: 9, test2: 1}.toString())
         })
 
         it('must call stream if the removed item was not the last one', function(done){
@@ -133,7 +163,7 @@ describe('DataHand', function(){
             dataHand.destroy = function(){
                 throw "Destroy called!"
             }
-            dataHand.list = ["test", "test2"]
+            dataHand.wordList = {test: 1, test2: 1}
             dataHand.removeWord("test2")
         })
 
@@ -144,39 +174,8 @@ describe('DataHand', function(){
             dataHand.destroy = function(){
                 done()
             }
-            dataHand.list = ["test"]
+            dataHand.wordList = {test: 1}
             dataHand.removeWord("test")
-        })
-    })
-
-    describe('changeWord', function(){
-        beforeEach(function(){
-            DataHand = proxyquire('../../src/data-hand.js', {
-                twitter: function(){}
-            })
-            dataHand = new DataHand(dataHandOptions)
-        })
-
-        it('must change the word if it is in the list', function(){
-            dataHand.stream = function(){}
-            dataHand.list = ["test", "test2"]
-            dataHand.changeWord("test", "test3")
-            assert.equal(dataHand.list.toString(), ["test3","test2"].toString())
-        })
-
-        it('must do nothing if the word is not in the list', function(){
-            dataHand.stream = function(){}
-            dataHand.list = ["test", "test2"]
-            dataHand.changeWord("test3", "test4")
-            assert.equal(dataHand.list.toString(), ["test","test2"].toString())
-        })
-
-        it('must call stream', function(done){
-            var calls = 0
-            dataHand.stream = function(){
-                done()
-            }
-            dataHand.addWord("test")
         })
     })
 
@@ -198,7 +197,7 @@ describe('DataHand', function(){
         })
 
         it('must return the right kind of object if the tweet text matches', function(){
-            dataHand.list = ["some", "words", "maybe"]
+            dataHand.wordList = {some: 1, words: 1, maybe: 1}
             var tweet = {
                 text: "This tweet has words which should attach the focus of the parser."
             }
@@ -206,7 +205,7 @@ describe('DataHand', function(){
         })
 
         it('must be able to match to more than one word', function(){
-            dataHand.list = ["some", "words", "maybe"]
+            dataHand.wordList = {some: 1, words: 1, maybe: 1}
             var tweet = {
                 text: "This tweet has words which should maybe attach the focus of the parser."
             }
@@ -215,7 +214,7 @@ describe('DataHand', function(){
         })
 
         it('must match also for tweet with different cases', function(){
-            dataHand.list = ["sOme", "WORDS", "Maybe"]
+            dataHand.wordList = {sOme: 1, WORDS: 1, Maybe: 1}
             var tweet = {
                 text: "This tweet has wordS which should attach THE focus of the parser."
             }
@@ -257,7 +256,7 @@ describe('DataHand', function(){
             })
             dataHand = new DataHand(dataHandOptions)
             dataHand.buildRequest = function(words){
-                return words
+                this.request = words
             }
             dataHand.stream("test")
         })
