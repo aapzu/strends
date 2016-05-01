@@ -2,7 +2,7 @@
 
 ## What is Strends?
 
-* Strends is my university’s practical work in programming. With Strends you can stream interesting Twitter hashtags, and compare them. It is great for example defining trends in some field. Strends is created in Node with Express.js.
+* With Strends you can stream interesting Twitter hashtags, and compare them. It is great for example defining trends in some field. Strends is created in Node with Express.js.
 
 ## How to use Strends?
 * Navigate to the main directory of Strends
