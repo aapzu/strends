@@ -4,6 +4,8 @@
 
 * With Strends you can stream interesting Twitter hashtags, and compare them. It is great for example defining trends in some field. Strends is created in Node with Express.js. For data transfer the app uses [Streamr](https://www.streamr.com).
 
+<img src="http://data.aapzu.xyz/img/Strends.jpg" />
+
 ## How to use Strends?
 * Navigate to the main directory of Strends
 * Edit the files twitter.js and streamr.js in the directory /config. Replace the tokens with yours.
